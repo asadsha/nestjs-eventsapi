@@ -6,8 +6,10 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "start": "nest start",
-    "start:dev": "nest start --watch"
+    "build": "npm run clean && nest build",
+    "clean": "rimraf dist",
+    "start": "nest start --watch",
+    "start:prod": "node dist/main"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
