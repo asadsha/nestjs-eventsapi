@@ -6,10 +6,22 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "npm run clean && nest build",
-    "clean": "rimraf dist",
-    "start": "nest start --watch",
-    "start:prod": "node dist/main"
+    "start": "node dist/src/main.js",
+    "prestart:prod": "npm install",
+    "start:dist": "node dist/main.js",
+    "start:prod": "node dist/main.js",
+    "postinstall": "npm run prestart:prod",
+    "prebuild": "rimraf dist",
+    "build": "nest build",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
@@ -31,9 +43,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.5.4",
-    "typeorm": "^0.2.27",
-    "ts-node": "9.0.0",
-    "typescript": "^3.7.4"
+    "typeorm": "^0.2.27"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",
