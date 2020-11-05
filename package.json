@@ -76,6 +76,9 @@
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
+    "engines": {
+      "node": "12.x"
+    },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   }
