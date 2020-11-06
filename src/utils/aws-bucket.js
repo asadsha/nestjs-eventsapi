@@ -1,23 +1,24 @@
 /* eslint-disable func-names */
 /* eslint-disable no-undef */
 import AWS from 'aws-sdk';
-import config from '../config/config';
+import * as env from 'dotenv';
+env.config();
 
 const UploadToAws = file => {
     const s3bucket = new AWS.S3({
-        accessKeyId: config.AWS_ACCESS_KEY,
-        secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
-        Bucket: config.AWS_BUCKET,
+        accessKeyId: process.env.AWS_ACCESS_KEY,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        Bucket: process.env.AWS_BUCKET,
     });
 
     return new Promise(function (resolve, reject) {
         s3bucket.createBucket(function () {
             const params = {
-                Bucket: config.AWS_BUCKET,
+                Bucket: process.env.AWS_BUCKET,
                 Key: file.originalname,
                 Body: file.buffer,
-                accessKeyId: config.AWS_ACCESS_KEY,
-                secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
+                accessKeyId: process.env.AWS_ACCESS_KEY,
+                secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
                 ACL: 'public-read',
             };
             s3bucket.upload(params, function (err, data) {
