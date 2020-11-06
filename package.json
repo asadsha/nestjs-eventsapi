@@ -8,8 +8,7 @@
   "scripts": {
     "start": "node index.js",
     "start:watch": "nodemon",
-    "foreman": "foreman start -f Procfile.dev",
-    "prestart:prod": "npm tsc",
+    "prestart:prod": "npm run tsc",
     "start:prod": "node dist/main.js"
   },
   "dependencies": {
