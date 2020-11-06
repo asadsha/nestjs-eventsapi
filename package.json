@@ -7,9 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "start": "node index.js",
-    "start:watch": "nodemon",
-    "prestart:prod": "npm run tsc",
-    "start:prod": "node dist/main.js"
+    "start:dev": "nodemon"
   },
   "dependencies": {
     "@nestjs/cli": "^7.0.0",
