@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node index.js",
     "start:watch": "nodemon",
-    "prestart:prod": "yarn tsc",
+    "prestart:prod": "npm tsc",
     "start:prod": "node dist/main.js"
   },
   "dependencies": {
