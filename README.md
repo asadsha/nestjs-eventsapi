@@ -12,6 +12,24 @@
 
 ## Description
 
+## Helpful Extensions
+
+- Eslint
+- Tslint
+- Prettier
+
+**Features**
+
+- 👏🏼 NestJs
+- 🌊 Cron Jobs
+- 👀 Some tricky settings applied so it can be deployed on heroku
+- ⌨️ Type safety using TypeScript in strict mode
+- 👀 AWS-S3 Bucket to upload images
+- 🌈 Prettier for consistent code style
+- ☝️  Auth with passport and jwt
+- ⚙️ Validation
+- 🗄 Logger to log some informational stuff
+
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Installation
