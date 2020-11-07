@@ -11,7 +11,6 @@ export class EventRepository extends Repository<Event> {
 
   async createEvent(createEventDto: CreateEventDto, user: User, file: File): Promise<Event> {
     const { title, description } = createEventDto;
-
     const imageUrl = await UploadToAws(file);
     console.log(imageUrl);
     if (imageUrl) {
@@ -26,9 +25,7 @@ export class EventRepository extends Repository<Event> {
         this.logger.error(`Failed to save error by user. DTO : ${JSON.stringify(createEventDto)}`, error.stack);
         throw new InternalServerErrorException('Internal Server Error! Try Again Later');
       }
-
       // delete task.user;
-
       return event;
     }
     throw new InternalServerErrorException('Internal Server Error! Try Again Later');

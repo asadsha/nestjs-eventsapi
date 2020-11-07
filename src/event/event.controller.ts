@@ -5,7 +5,7 @@ import {
   Body,
   Param,
   Delete,
-  // Patch,
+  Patch,
   // Query,
   ParseIntPipe,
   UseGuards,
@@ -21,6 +21,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { EventsService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { Event } from './event.entity';
+import { UpdateEventDto } from './dto/update-event.dto';
 
 @Controller('events')
 @UseGuards(AuthGuard())
@@ -73,13 +74,19 @@ export class EventsController {
     return this.eventsService.deleteEvent(id);
   }
 
-  // @Patch('/:id/status')
-  // updateTaskStatus(
-  //   @Param('id', ParseIntPipe) id: number,
-  //   @Body('status', TaskStatusValidationPipe) status: TaskStatus,
-  //   @Req() req
-  // ): Promise<Event> {
-  //   this.logger.verbose(`user ${req.user.name} updating task. Status: ${status}`); // logging info
-  //   return this.eventsService.updateTaskStatus(id, status, req.user);
-  // }
+  @Patch('/:id')
+  @UseInterceptors(FileInterceptor('file'))
+  updateTaskStatus(
+    @Param('id') id: string,
+    @Body() updateEventDto: UpdateEventDto,
+    @Req() req,
+    @UploadedFile() file
+  ): Promise<Event> {
+    this.logger.verbose(`user ${req.user.name} updating task.`); // logging info
+    if (file !== undefined) {
+      return this.eventsService.updateEvent(id, updateEventDto, req.user, file);
+    } else {
+      throw new BadRequestException('Image is required');
+    }
+  }
 }

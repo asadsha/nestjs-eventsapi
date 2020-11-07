@@ -1,9 +1,12 @@
-import { Injectable, NotFoundException, Logger } from '@nestjs/common';
-import { CreateEventDto } from './dto/create-event.dto';
+import { Injectable, NotFoundException, Logger, BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { Cron } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateEventDto } from './dto/create-event.dto';
 import { EventRepository } from './event.repository';
 import { Event } from './event.entity';
 import { User } from '../auth/user.entity';
+import { UpdateEventDto } from './dto/update-event.dto';
+import { UploadToAws } from '../utils/aws-bucket.js';
 
 @Injectable()
 export class EventsService {
@@ -36,10 +39,23 @@ export class EventsService {
     return this.eventRepository.createEvent(createEventDto, user, file);
   }
 
-  // async updateTaskStatus(id: number, status: TaskStatus, user: User): Promise<Event> {
-  //   const task = await this.getTaskById(id, user);
-  //   task.status = status;
-  //   await task.save();
-  //   return task;
-  // }
+  // cron job to run when the current second is 45
+  @Cron('45 * * * * *')
+  handleCron() {
+    console.log('Called when the current second is 45');
+  }
+
+  async updateEvent(id: string, updateEventDto: UpdateEventDto, user: User, file: File): Promise<Event> {
+    const imageUrl = await UploadToAws(file);
+    if (imageUrl) {
+      const { title, description } = updateEventDto;
+      const event = await this.getEventById(id);
+      event.title = title;
+      event.description = description;
+      event.imageUrl = imageUrl;
+      await event.save();
+      return event;
+    }
+    throw new InternalServerErrorException('Internal Server Error! Try Again Later.');
+  }
 }
