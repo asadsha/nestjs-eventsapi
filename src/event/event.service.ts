@@ -32,8 +32,8 @@ export class EventsService {
     }
   }
 
-  async createEvent(createEventDto: CreateEventDto, user: User): Promise<Event> {
-    return this.eventRepository.createEvent(createEventDto, user);
+  async createEvent(createEventDto: CreateEventDto, user: User, file: File): Promise<Event> {
+    return this.eventRepository.createEvent(createEventDto, user, file);
   }
 
   // async updateTaskStatus(id: number, status: TaskStatus, user: User): Promise<Event> {

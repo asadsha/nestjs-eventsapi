@@ -1,7 +1,7 @@
 /* eslint-disable func-names */
 /* eslint-disable no-undef */
-import AWS from 'aws-sdk';
-import * as env from 'dotenv';
+const AWS = require('aws-sdk');
+const env = require('dotenv');
 env.config();
 
 const UploadToAws = file => {
@@ -10,7 +10,6 @@ const UploadToAws = file => {
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
         Bucket: process.env.AWS_BUCKET,
     });
-
     return new Promise(function (resolve, reject) {
         s3bucket.createBucket(function () {
             const params = {
@@ -33,4 +32,4 @@ const UploadToAws = file => {
     });
 };
 
-export default { UploadToAws };
+module.exports = { UploadToAws };

@@ -15,8 +15,8 @@ export class Event extends BaseEntity {
   @Column()
   userId: string;
 
-  // @Column()
-  // imageUrl: string;
+  @Column()
+  imageUrl: string;
 
   // @OneToMany(type => User, user => user.event, { eager: true })
   // users: User[];

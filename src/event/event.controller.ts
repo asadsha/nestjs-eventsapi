@@ -12,7 +12,11 @@ import {
   Req,
   Logger,
   UnauthorizedException,
+  BadRequestException,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '@nestjs/passport';
 import { EventsService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -43,15 +47,21 @@ export class EventsController {
   }
 
   @Post()
+  @UseInterceptors(FileInterceptor('file'))
   createEvent(
     @Body() createEventDto: CreateEventDto,
     @Req() req,
+    @UploadedFile() file
   ): Promise<Event> {
     if (req.user.userType !== "admin") {
       throw new UnauthorizedException('Not Authorized');
     }
-    this.logger.verbose(`user ${req.user.name} creating a new event. Data: ${JSON.stringify(createEventDto)}`);
-    return this.eventsService.createEvent(createEventDto, req.user);
+    if (file !== undefined) {
+      this.logger.verbose(`user ${req.user.name} creating a new event. Data: ${JSON.stringify(createEventDto)}`);
+      return this.eventsService.createEvent(createEventDto, req.user, file);
+    } else {
+      throw new BadRequestException('Image is required');
+    }
   }
 
   @Delete('/:id')
